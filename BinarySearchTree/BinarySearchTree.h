@@ -1,7 +1,7 @@
 #include<iostream>
 using namespace std;
 template<class K>
- struct BSTreeNode
+ struct BSTreeNode	//?æ ‘çš„èŠ‚ç‚¹
 {
 	BSTreeNode<K>* _left;
 	BSTreeNode<K>* _right;
@@ -15,37 +15,36 @@ template<class K>
 };
 
 template<class K>
-class BSTree
+class BSTree	//?æ ‘çš„ç±»
 {
 public:
 	typedef BSTreeNode<K> Node;
-	BSTree()
+	BSTree()	//todo(æ„é€ å‡½æ•°)
 		:_root(nullptr)
 	{}
 
-	~BSTree()
+	~BSTree()	//todo(ææ„å‡½æ•°)
 	{
 		_Destroy(_root);
 		_root = nullptr;
 	}
 
-	BSTree(const BSTree<K>& t)
+	BSTree(const BSTree<K>& t)	//todo(æ‹·è´æ„é€ )
 	{
 		_root = _Copy(t._root);
 	}
 
-	BSTree<K>& operator=(BSTree<K> t)
+	BSTree<K>& operator=(BSTree<K> t)	//todo(èµ‹å€¼é‡è½½)
 	{
 		swap(_root, t._root);
 		return *this;
 	}
 
 
-	//1.²åÈë
-	//·Çµİ¹é
-	bool Insert(const K& key)
+	
+	bool Insert(const K& key)	//todo(æ’å…¥å‡½æ•°: éé€’å½’)
 	{
-		//_rootÎª¿Õ£¬Ö±½Ó¸³¸ø_root
+		//*å¦‚æœæ ‘ä¸ºç©ºï¼Œæ’å…¥çš„èŠ‚ç‚¹å°±æ˜¯æ ¹
 		if (_root == nullptr)
 		{
 			_root = new Node(key);
@@ -54,7 +53,7 @@ public:
 
 		Node* cur = _root;
 		Node* parent = nullptr;
-		//´ÓÉÏÍùÏÂ±éÀú£¬key±ÈcurµÄ_key´ó¾Í×ßÓÒ£¬Ğ¡¾Í×ß×ó
+		//*æ‰¾åˆ°è¦æ’å…¥çš„ä½ç½®
 		while (cur)
 		{
 			if (key < cur->_key)
@@ -67,14 +66,14 @@ public:
 				parent = cur;
 				cur = cur->_right;
 			}
-			//ÏàµÈ¾Íreturn false
+			//*å¦‚æœå‘ç°è¦æ’å…¥çš„å€¼å·²ç»å­˜åœ¨ï¼Œåˆ™æ’å…¥å¤±è´¥
 			else
 			{
 				return false;
 			}
 		}
 		cur = new Node(key);
-		//ÕÒµ½ÁËºÏÊÊµÄÎ»ÖÃ£¬ÅĞ¶ÏÊÇÁ¬×ó»¹ÊÇÁ¬ÓÒ
+		//*å¼€å§‹æ’å…¥ï¼Œåˆ¤æ–­æ˜¯åœ¨å·¦è¾¹è¿˜æ˜¯å³è¾¹æ’å…¥
 		if (key > parent->_key)
 		{
 			parent->_right = cur;
@@ -86,23 +85,21 @@ public:
 		return true;
 	}
 
-	//µİ¹é
-	bool InsertR(const K& key)
+	
+	bool InsertR(const K& key)	//todo(é€’å½’å¼æ’å…¥)
 	{
 		return _InsertR(_root, key);
 	}
 
-	//2.ÖĞĞò±éÀú
-	void InOrder()
+	
+	void InOrder()	//todo(ä¸­åºéå†)
 	{
-		//ÎªÁËµ÷ÓÃµÄÊ±ºò²»´«²ÎÊı
 		_InOrder(_root);
 		cout << endl;
 	}
 
-	//3.²éÕÒ
-	//·Çµİ¹é
-	Node* Find(const K& key)
+	
+	Node* Find(const K& key) //todo(æŸ¥æ‰¾å‡½æ•°)
 	{
 		if (_root == nullptr)
 			return NULL;
@@ -119,16 +116,16 @@ public:
 		return NULL;
 	}
 
-	//µİ¹é
-	Node* FindR(const K& key)
+	
+	Node* FindR(const K& key)	//todo(é€’å½’å¼æŸ¥æ‰¾)
 	{
 		return _FindR(_root, key);
 	}
 
-	//4.É¾³ı
-	//·Çµİ¹é
-	bool Erase(const K& key)
+	
+	bool Erase(const K& key)	//todo(æœç´¢äºŒå‰æ ‘çš„åˆ é™¤)
 	{
+		//*é¦–å…ˆæ‰¾åˆ°è¦åˆ é™¤çš„ç»“ç‚¹
 		Node* parent = nullptr;
 		Node* cur = _root;
 		while (cur)
@@ -145,11 +142,12 @@ public:
 			}
 			else
 			{
-				//ÕÒµ½ÁË£¬×¼±¸É¾³ı
-				//(1) curµÄ×ó±ßÊÇ¿Õ£¬½«parentÖ¸ÏòcurµÄÓÒ±ß
-				if (cur->_left == nullptr)
+				//*æ‰¾åˆ°äº†è¦åˆ é™¤çš„ç»“ç‚¹ï¼Œå‡†å¤‡å¼€å§‹åˆ é™¤
+				//*å¯¹è¦åˆ é™¤çš„ç»“ç‚¹åˆ†ä¸ºä¸‰ç§æƒ…å†µï¼š
+				//*1.èŠ‚ç‚¹çš„å·¦ä¸ºç©º  2ï¼Œç»“ç‚¹çš„å³ä¸ºç©º  3.ç»“ç‚¹çš„å·¦å³éƒ½ä¸ä¸ºç©º
+				if (cur->_left == nullptr) 
 				{
-					if (cur == _root)
+					if (cur == _root) //!è¦åˆ é™¤çš„ç»“ç‚¹æ˜¯æ ¹èŠ‚ç‚¹æ—¶è¦å•ç‹¬å¤„ç†
 					{
 						_root = cur->_right;
 					}
@@ -166,12 +164,12 @@ public:
 					}
 					delete cur;
 				}
-				//(2) curµÄÓÒ±ßÊÇ¿Õ£¬½«parentÖ¸ÏòcurµÄ×ó±ß
+
 				else if (cur->_right == nullptr)
 				{
 					if (cur == _root)
 					{
-						_root = cur->_left;
+						_root = cur->_left;	//!è¦åˆ é™¤çš„ç»“ç‚¹æ˜¯æ ¹èŠ‚ç‚¹æ—¶è¦å•ç‹¬å¤„ç†
 					}
 					else
 					{
@@ -186,22 +184,21 @@ public:
 					}
 					delete cur;
 				}
-				//(3) curµÄÁ½±ß¶¼²»Îª¿Õ
+
 				else
 				{
-					//ÕÒµ½×ó±ß×î´óµÄ
-					Node* leftmax_parent = cur;//ÕâÀï²»ÄÜÊÇnullptr£¬Èç¹ûleftmax->rightÎª¿Õ£¬½ø²»È¥Ñ­»·leftmax_parentÊ¼ÖÕÎªnullptr,Òı·¢±ÀÀ£
+					//*è¦åˆ é™¤çš„ç»“ç‚¹çš„å·¦å³éƒ½ä¸ä¸ºç©ºï¼Œå¯ä»¥æ‰¾åˆ°å·¦å­æ ‘æœ€å¤§çš„ç»“ç‚¹æˆ–è€…å³å­æ ‘æœ€å°çš„ç»“ç‚¹å»æ›¿æ¢è¦åˆ é™¤çš„ç»“ç‚¹
+					Node* leftmax_parent = cur;
 					Node* leftmax = cur->_left;
-					while (leftmax->_right != nullptr)
+					while (leftmax->_right != nullptr) 
 					{
 						leftmax_parent = leftmax;
 						leftmax = leftmax->_right;
 					}
-					//½«ÕÒµ½µÄ×î´óÖµleftmaxÌæ»»cur,ÔÙÉ¾³ıleftmax
-					cur->_key = leftmax->_key;
+
+					cur->_key = leftmax->_key;	//*ç”¨å·¦è¾¹æœ€å¤§çš„ç»“ç‚¹æ›¿æ¢è¦åˆ é™¤çš„ç»“ç‚¹
 					
-					//²»¿ÉÒÔif(leftmax->_left == nullptr)
-					if (leftmax_parent->_right == leftmax)
+					if (leftmax_parent->_right == leftmax)	//*æŠŠå·¦è¾¹æœ€å¤§çš„é‚£ä¸ªèŠ‚ç‚¹æ‹¿æ‰
 					{
 						leftmax_parent->_right = leftmax->_left;
 					}
@@ -217,7 +214,7 @@ public:
 		return false;
 	}
 
-	bool EraseR(const K& key)
+	bool EraseR(const K& key)	//todo(é€’å½’å¼åˆ é™¤)
 	{
 		return _EraseR(_root, key);
 	}
@@ -225,7 +222,7 @@ public:
 private:
 	Node* _root;
 
-	void _Destroy(Node* root)
+	void _Destroy(Node* root)	//todo(é”€æ¯æ‰€æœ‰ç»“ç‚¹)
 	{
 		if (root == NULL)
 			return;
@@ -234,7 +231,7 @@ private:
 		delete root;
 	}
 
-	Node* _Copy(Node* root)
+	Node* _Copy(Node* root)		//todo(æ‹·è´æ‰€æœ‰èŠ‚ç‚¹)
 	{
 		if (root == nullptr)
 			return nullptr;
@@ -244,7 +241,7 @@ private:
 		return newnode;
 	}
 
-	void _InOrder(Node* root)
+	void _InOrder(Node* root)	//todo(ä¸­åºéå†é€’å½’å­å‡½æ•°)
 	{
 		if (root == nullptr)
 			return;
@@ -253,7 +250,7 @@ private:
 		_InOrder(root->_right);
 	}
 
-	Node* _FindR(Node* root, const K& key)
+	Node* _FindR(Node* root, const K& key)	//todo(é€’å½’å¼æŸ¥æ‰¾é€’å½’å­å‡½æ•°)
 	{
 		if (root == nullptr)
 		{
@@ -273,10 +270,8 @@ private:
 		}
 	}
 
-	bool _InsertR(Node*& root, const K& key)
-		//Node*& root ¸Ä±ärootµÄÍ¬Ê±Ò²¸Ä±äÁËÉÏ¼¶µÄroot->_left»òÕßroot->_right
-		//root ÊÇroot->_left»òÕßroot->_rightµÄ±ğÃû
-	{
+	bool _InsertR(Node*& root, const K& key)	//todo(é€’å½’å¼æ’å…¥å­å‡½æ•°)
+	{                                           //!æ³¨æ„è¿™é‡Œå‚æ•°ä¼ æŒ‡é’ˆçš„å¼•ç”¨
 		if (root == nullptr)
 		{
 			root = new Node(key);
@@ -314,7 +309,7 @@ private:
 		}
 		else
 		{
-			//É¾³ı
+			//*æ‰¾åˆ°äº†åˆ é™¤çš„ä½ç½®
 			if (root->_left == nullptr)
 			{
 				Node* del = root;
